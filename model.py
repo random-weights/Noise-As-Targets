@@ -4,6 +4,23 @@ from scipy.optimize import linear_sum_assignment
 from scipy.spatial import distance
 import matplotlib.pyplot as plt
 
+def generate_Y(count,dim):
+    """
+    Generates y vector of size (count,dim)
+    each entry of y is a point on unit circle.
+    How??
+    generate a random int vector and divide by its eucledian distance.
+    :param count: the no.of images usually dictated by one_hot_length
+    :param dim: the dimension of each y vector (usually in power of 2)
+    :return: a vector Y that is the target mass
+    """
+    Y = np.random.randint(1,100,size = [count,dim]).astype(np.float32)
+    origin = np.zeros(shape = [1,dim])
+    for y_numb, y_vector in enumerate(Y):
+        dist = distance.euclidean(y_vector, origin)
+        Y[y_numb] = y_vector/dist
+    return Y
+
 
 def Hungerian(y,z):
     """
@@ -31,4 +48,8 @@ def Hungerian(y,z):
         for index in new_indices:
             new_y.append(y[index])
         return np.array(new_y).reshape(shape_y)
+
+
+
+
 
