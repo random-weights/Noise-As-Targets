@@ -159,10 +159,7 @@ with gph.as_default():
     z = tf.contrib.layers.flatten(inputs = l5_relu,scope = "flat_tensor")
 
     # unit normalize each vector in z
-    with tf.variable_scope("normalize"):
-        dist = tf.sqrt(tf.reduce_sum(z ** 2, axis=[1]), name="euclidian_dist")
-        dist = tf.reshape(dist, shape=[batch_size, 1],name = "euclidian_dist_reshape")
-        z_norm = tf.div(z, dist,name = "z_norm")
+    z_norm = tf.nn.l2_normalize(z,axis = [1],name = "normalized")
 
     # cost is a l2 loss
     cost = tf.reduce_mean((z_norm - y)**2,name = "cost")
